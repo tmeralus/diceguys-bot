@@ -21,11 +21,12 @@ hashtag2 = '#ttrpg'
 hashtag2tweets = tweepy.Cursor(api.search, hashtag2).items(tweetNumber)
 hashtag3 = '#pathfinder'
 hashtag3tweets = tweepy.Cursor(api.search, hashtag3).items(tweetNumber)
-hashtag4 = '#dndstream'
+hashtag4 = '#dnd'
 hashtag4tweets = tweepy.Cursor(api.search, hashtag4).items(tweetNumber)
 hashtag5 = '#dungeonsandragons'
 hashtag5tweets = tweepy.Cursor(api.search, hashtag5).items(tweetNumber)
 
+hashtaglist = ['#actualplay', '#ttrpg', '#pathfinder', '#dndstream', '#dungeonsanddragons' ]
 
 # name for file saving tweet records
 FILE_NAME = 'last_seen.txt'
@@ -56,6 +57,7 @@ def reply():
             #api.update_status("@" + tweet.user.screen_name + " Thank you!", tweet.id)
             store_last_seen(FILE_NAME, tweet.id)
 
+# retweet any mention of @somediceguys
 def diceguys_mentions():
     # Returns the 20 most recent mentions, including retweets.
     tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
@@ -67,8 +69,8 @@ def diceguys_mentions():
             tweet.retweet()
             api.create_favorite(tweet.id)
 
-def direct_message():
-    # Returns the 20 most recent mentions, including retweets.
+# Send a thank you DM for new followers
+def dm_thankyou():
     tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
     new_followers = API.followers(user)
     # for loop to send direct messages to new followers
@@ -77,9 +79,9 @@ def direct_message():
             api.get_direct_message(tweet.id)
             api.send_direct_message(twitter_user, 'Thank you for following us. We are just getting started with our adventure. Feel free to listen to our podcast here https://linktr.ee/somediceguys ')
             print("New twitter follower, DM sent ")
-
+  
 # Search for hashtag variables, like, and retweet
-def searchbot_ht1():
+def searchbot():
     for tweet in hashtag1tweets:
         try:
             tweet.retweet()
@@ -88,9 +90,6 @@ def searchbot_ht1():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
-
-def searchbot_ht2():
     for tweet in hashtag2tweets:
         try:
             tweet.retweet()
@@ -99,9 +98,6 @@ def searchbot_ht2():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
-
-def searchbot_ht3():
     for tweet in hashtag3tweets:
         try:
             api.create_favorite(tweet.id)
@@ -109,9 +105,6 @@ def searchbot_ht3():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
-
-def searchbot_ht4():
     for tweet in hashtag4tweets:
         try:
             api.create_favorite(tweet.id)
@@ -119,9 +112,6 @@ def searchbot_ht4():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
-
-def searchbot_ht5():
     for tweet in hashtag5tweets:
         try:
             api.create_favorite(tweet.id)
@@ -129,20 +119,18 @@ def searchbot_ht5():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
-while True:
-    searchbot_ht1 
-    searchbot_ht2 
-    searchbot_ht3 
-    searchbot_ht4 
-    searchbot_ht5 
-    diceguys_mentions 
-    #direct_message 
-    #reply()
-    #time.sleep(7)
 
-# Send a thank you DM for new followers
 
-# search for #ActualPlay and #dndpodcast tweets
+def direct_message():
+    dm_thankyou
+ 
+# For loop to search and like hashtag list  
+def search_and_like():
+    for tweet in hashtaglist:
+        api.create_favorite(tweet.id)
+        print( tweet + " found, adding to favorites")
 
-# retweet any mention of @somediceguys
+
+searchbot()
+search_and_like()  
+diceguys_mentions()  
