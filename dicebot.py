@@ -14,7 +14,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(key, secret)
 api = tweepy.API(auth)
 # Twitter search strings variables for liking and retweeting trending hashtags
-tweetNumber = 10
+tweetNumber = 20
 hashtag1 = '#actualplay'
 hashtag1tweets = tweepy.Cursor(api.search, hashtag1).items(tweetNumber)
 hashtag2 = '#ttrpg'
@@ -92,7 +92,6 @@ def searchbot():
             time.sleep(3)
     for tweet in hashtag2tweets:
         try:
-            tweet.retweet()
             api.create_favorite(tweet.id)
             print( hashtag2 + " found, liked and retweeted")
         except tweepy.TweepError as e:
@@ -107,6 +106,7 @@ def searchbot():
             time.sleep(3)
     for tweet in hashtag4tweets:
         try:
+            tweet.retweet()
             api.create_favorite(tweet.id)
             print( hashtag4 + " found, adding to favorites")
         except tweepy.TweepError as e:
