@@ -1,4 +1,5 @@
-# Twitter bot to read, reply, and retweet
+# Twitter bot to reply to twitter users who interact 
+# with specific username
 # from interaction
 # tutorial link https://www.youtube.com/watch?v=ewq-91-e2fw&list=WL&index=2&t=112s
 # stopped at 13:40
