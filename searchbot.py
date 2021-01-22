@@ -1,18 +1,18 @@
-# Twitter bot to search for specific hashtag values and like or retweet
-# from interaction 
 import tweepy
 import time
-import os 
-# Set secret env variables for python app 
-consumer_key = os.environ.get("BOT_CONSUMER_KEY") 
-consumer_secret = os.environ.get("BOT_CONSUMER_SECRET_KEY") 
-api_key = os.environ.get("BOT_TWIT_API_KEY")  
-api_secret = os.environ.get("BOT_TWIT_SECRET_KEY")  
-# set authentication keys 
+import os
+from credentials import *
+from config import QUERY, FOLLOW, LIKE, SLEEP_TIME, TWEET_NUMBER
+# Assign twitter Oauth variables
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(key, secret)
+api = tweepy.API(auth)
+
+# set authentication keys
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(api_key, api_secret)
 api = tweepy.API(auth)
-twittername ='@somediceguys' 
+twittername ='@somediceguys'
  # name for file saving tweet records
 FILE_NAME = 'last_seen.txt'
 # Read method for reading last_seen.txt file for reading latest tweets
@@ -41,17 +41,17 @@ hashtag4 = '#dndstream'
 hashtag4tweets = tweepy.Cursor(api.search, hashtag4).items(tweetNumber)
 hashtag5 = '#dungeonsandragons'
 hashtag5tweets = tweepy.Cursor(api.search, hashtag5).items(tweetNumber)
-# Array for hashtags 
-hashtagArray = ["#dnd", "#actualplay", "#ttrpg", "#dndstream", "#dungeonsandragons", "#pathfinder"] 
+# Array for hashtags
+hashtagArray = ["#dnd", "#actualplay", "#ttrpg", "#dndstream", "#dungeonsandragons", "#pathfinder"]
 hashArraytweet = tweepy.Cursor(api.search, hashtagArray).items(tweetNumber)
 
-# Create for loop to like array of hashtags  
+# Create for loop to like array of hashtags
 def likeloop():
-    for i in hashtagArray:
+    for i in hashArraytweet:
        api.create_favorite(tweet.id)
        print( i + " tweet was liked")
 
-# Create for loop to retweet array of hashtags  
+# Create for loop to retweet array of hashtags
 def retweetloop():
     for i in hashtagArray:
         tweet.retweet()
@@ -68,7 +68,7 @@ def searchbot_ht1():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
+
 
 def searchbot_ht2():
     for tweet in hashtag2tweets:
@@ -79,7 +79,7 @@ def searchbot_ht2():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
+
 
 def searchbot_ht3():
     for tweet in hashtag3tweets:
@@ -89,7 +89,7 @@ def searchbot_ht3():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
+
 
 def searchbot_ht4():
     for tweet in hashtag4tweets:
@@ -99,7 +99,7 @@ def searchbot_ht4():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
-           
+
 
 def searchbot_ht5():
     for tweet in hashtag5tweets:
@@ -109,10 +109,7 @@ def searchbot_ht5():
         except tweepy.TweepError as e:
             print(e.reason)
             time.sleep(3)
- 
 
-likeloop
-retweetloop
 # hashtag1 = '#actualplay'
 # hashtag1tweets = tweepy.Cursor(api.search, hashtag1).items(tweetNumber)
 
@@ -123,3 +120,7 @@ for tweet in hashArraytweet:
 for tweet in hashArraytweet:
     tweet.retweet()
     print( i + " tweet was retweeted")
+
+
+likeloop()
+retweetloop()

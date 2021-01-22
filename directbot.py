@@ -1,19 +1,12 @@
-# Twitter bot to retweet, follow, and DM people who interact with 
-# specific user from interaction
 import tweepy
 import time
-import os 
-# Set secret env variables for python app 
-consumer_key = os.environ.get("BOT_CONSUMER_KEY") 
-consumer_secret = os.environ.get("BOT_CONSUMER_SECRET_KEY") 
-api_key = os.environ.get("BOT_TWIT_API_KEY")  
-api_secret = os.environ.get("BOT_TWIT_SECRET_KEY")  
-# set authentication keys 
+import os
+from credentials import *
+from config import QUERY, FOLLOW, LIKE, SLEEP_TIME, TWEET_NUMBER
+# Assign twitter Oauth variables
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(api_key, api_secret)
+auth.set_access_token(key, secret)
 api = tweepy.API(auth)
-twittername ='@somediceguys' 
-
 # name for file saving tweet records
 FILE_NAME = 'last_seen.txt'
 # Read method for reading last_seen.txt file for reading latest tweets
@@ -42,7 +35,7 @@ def reply():
             #api.update_status("@" + tweet.user.screen_name + " Thank you!", tweet.id)
             store_last_seen(FILE_NAME, tweet.id)
 
-# Retweet people who mention twittername  
+# Retweet people who mention twittername
 def diceguys_mentions():
     # Returns the 20 most recent mentions, including retweets.
     tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
@@ -54,7 +47,7 @@ def diceguys_mentions():
             tweet.retweet()
             api.create_favorite(tweet.id)
 
-# Send DM to new followers 
+# Send DM to new followers
 def direct_message():
     # Returns the 20 most recent mentions, including retweets.
     tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
@@ -66,6 +59,4 @@ def direct_message():
             api.send_direct_message(twitter_user, 'Thank you for following us. We are just getting started with our adventure. Feel free to listen to our podcast here https://linktr.ee/somediceguys ')
             print("New twitter follower, DM sent ")
 
-#Follow back users who follow you 
-
- 
+#Follow back users who follow you

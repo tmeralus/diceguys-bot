@@ -4,12 +4,9 @@
 # stopped at 13:40
 import tweepy
 import time
-
+import os
 # Assign twitter Oauth variables
-consumer_key = 'MNG12P35j6DE18AgvRmC7dzyy'
-consumer_secret = '47KuoW8b5GFFyy19buhqWIlpkCmEgrnadV8AAnIB9Sz65gbjvz'
-key = '1288313457029390337-y856XMgPEnZg2i7p30d2x2zWTTaOKy'
-secret = 'D3g4GCcTDrDIDXOD9cVHfYzPaU8SyAgJl3HS6z2OQG2wu'
+
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(key, secret)
 api = tweepy.API(auth)
@@ -27,12 +24,11 @@ hashtag5 = '#dungeonsandragons'
 hashtag5tweets = tweepy.Cursor(api.search, hashtag5).items(tweetNumber)
 
 hashtaglist = ['#actualplay', '#ttrpg', '#PathFinder', '#dndstream', '#dungeonsanddragons', '#DnD', '#dnd' ]
- 
-# For loop to search and like hashtag list  
+
+# For loop to search and like hashtag list
 def search_and_like():
     for tweet in hashtaglist:
         api.create_favorite(tweet.id)
         print( tweet + " found, adding to favorites")
-        
-while True: 
-    search_and_like  
+
+search_and_like

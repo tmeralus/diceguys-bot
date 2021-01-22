@@ -1,18 +1,13 @@
-# Twitter bot to retweet, follow, and DM people who interact with 
-# specific user  from interaction
 import tweepy
 import time
-import os 
-
+import os
+from credentials import *
+from config import QUERY, FOLLOW, LIKE, SLEEP_TIME, TWEET_NUMBER
 # Assign twitter Oauth variables
-consumer_key = 'MNG12P35j6DE18AgvRmC7dzyy'
-consumer_secret = '47KuoW8b5GFFyy19buhqWIlpkCmEgrnadV8AAnIB9Sz65gbjvz'
-key = '1288313457029390337-y856XMgPEnZg2i7p30d2x2zWTTaOKy'
-secret = 'D3g4GCcTDrDIDXOD9cVHfYzPaU8SyAgJl3HS6z2OQG2wu'
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(key, secret)
 api = tweepy.API(auth)
-twittername ='@somediceguys'
+
 
 # name for file saving tweet records
 FILE_NAME = 'last_seen.txt'
@@ -30,7 +25,7 @@ def store_last_seen(FILE_NAME, last_seen_id):
     file_write.close()
     return
 
-# pull last tweet ID and saved to last seen file 
+# pull last tweet ID and saved to last seen file
 
 # Send reply back to users
 def reply():
@@ -45,7 +40,7 @@ def reply():
             #api.update_status("@" + tweet.user.screen_name + " Thank you!", tweet.id)
             store_last_seen(FILE_NAME, tweet.id)
 
-# Retweet people who mention twittername  
+# Retweet people who mention twittername
 def diceguys_mentions():
     # Returns the 20 most recent mentions, including retweets.
     tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
@@ -57,7 +52,7 @@ def diceguys_mentions():
             tweet.retweet()
             api.create_favorite(tweet.id)
 
-# Send DM to new followers 
+# Send DM to new followers
 def follow_followers():
     # Returns the 20 most recent mentions, including retweets.
     tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
@@ -73,5 +68,5 @@ def follow_followers():
             print("New twitter follower, DM sent ")
 
 
-follow_followers
-diceguys_mentions
+follow_followers()
+diceguys_mentions()
