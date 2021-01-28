@@ -16,3 +16,4 @@ FOLLOW = False
 SLEEP_TIME = 300
 
 TWEET_NUMBER = 20
+TWITTER_NAME ='@somediceguys'
