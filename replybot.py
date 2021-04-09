@@ -38,93 +38,14 @@ def store_last_seen(FILE_NAME, last_seen_id):
     file_write.close()
     return
 
-# Send reply back to users
-def reply():
-    # Returns the 20 most recent mentions, including retweets.
-    tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
-    # for loop to print tweet id and tweet in order
-    # and responds to last seen tweet with a thank you
-    for tweet in reversed(tweets):
-        if '@somediceguys' in tweet.full_text.lower():
-            print(str(tweet.id) + ' - ' + tweet.full_text)
-            api.create_favorite(tweet.id)
-            #api.update_status("@" + tweet.user.screen_name + " Thank you!", tweet.id)
-            store_last_seen(FILE_NAME, tweet.id)
+# ID of the recipient
+recipient_id = @techgameteddy
 
-# retweet any mention of @somediceguys
-def diceguys_mentions():
-    # Returns the 20 most recent mentions, including retweets.
-    tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
-    # for loop to like and retweet any
-    # tweets containing @somediceguys
-    for tweet in reversed(tweets):
-        if '@somediceguys' in tweet.full_text.lower():
-            print("New twitter interaction")
-            tweet.retweet()
-            api.create_favorite(tweet.id)
+# text to be sent
+text = "Dice Bot was run"
 
-# Send a thank you DM for new followers
-def dm_thankyou():
-    tweets = api.mentions_timeline(read_last_seen(FILE_NAME), tweet_mode='extended')
-    new_followers = API.followers(user)
-    # for loop to send direct messages to new followers
-    for i in reversed(new_followers):
-        if '@somediceguys' in tweet.full_text.lower():
-            api.get_direct_message(tweet.id)
-            api.send_direct_message(twitter_user, 'Thank you for following us. We are just getting started with our adventure. Feel free to listen to our podcast here https://linktr.ee/somediceguys ')
-            print("New twitter follower, DM sent ")
+# sending the direct message
+direct_message = api.send_direct_message(recipient_id, text)
 
-# Search for hashtag variables, like, and retweet
-def searchbot():
-    for tweet in hashtag1tweets:
-        try:
-            tweet.retweet()
-            api.create_favorite(tweet.id)
-            print( hashtag1 + " found, liked and retweeted")
-        except tweepy.TweepError as e:
-            print(e.reason)
-            time.sleep(3)
-    for tweet in hashtag2tweets:
-        try:
-            api.create_favorite(tweet.id)
-            print( hashtag2 + " found, liked and retweeted")
-        except tweepy.TweepError as e:
-            print(e.reason)
-            time.sleep(3)
-    for tweet in hashtag3tweets:
-        try:
-            api.create_favorite(tweet.id)
-            print( hashtag3 + " found, adding to favorites")
-        except tweepy.TweepError as e:
-            print(e.reason)
-            time.sleep(3)
-    for tweet in hashtag4tweets:
-        try:
-            tweet.retweet()
-            api.create_favorite(tweet.id)
-            print( hashtag4 + " found, adding to favorites")
-        except tweepy.TweepError as e:
-            print(e.reason)
-            time.sleep(3)
-    for tweet in hashtag5tweets:
-        try:
-            api.create_favorite(tweet.id)
-            print( hashtag5 + " found, adding to favorites")
-        except tweepy.TweepError as e:
-            print(e.reason)
-            time.sleep(3)
-
-
-def direct_message():
-    dm_thankyou
-
-# For loop to search and like hashtag list
-def search_and_like():
-    for tweet in hashtaglist:
-        api.create_favorite(tweet.id)
-        print( tweet + " found, adding to favorites")
-
-
-searchbot()
-search_and_like()
-diceguys_mentions()
+# printing the text of the sent direct message
+print(direct_message.message_create['message_data']['text'])
